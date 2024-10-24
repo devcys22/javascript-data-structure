@@ -40,6 +40,7 @@ class DoublyLinkedList{
         this.length--;
         return popedNode;
     }
+    //todo length 줄어들지 않는다 
     shift(){
         if(this.length === 0) return undefined;
         var oldHead = this.head;
@@ -94,5 +95,38 @@ class DoublyLinkedList{
         }
         return false;
     }
+    insert(index, val){
+        if(index < 0 || index > this.length) return false;
+        if(index === 0) return !!this.unshift(val);
+        if(index === this.length) return !!this.push(val);
+
+        var newNode = new Node(val);
+        var beforeNode = this.get(index -1);
+        var afterNode = beforeNode.next;
+
+        beforeNode.next = newNode, newNode.prev = beforeNode;
+        newNode.next = afterNode, afterNode.prev = newNode;
+        this.length++;
+        return true;
+    }
+    remove(index){
+        if(index < 0 || index >= this.length) return undefined;
+        if(index === 0) return this.shift();
+        if(index === this.length - 1) return this.pop();
+        var removeNode = this.get(index);
+        var beforeNode = removeNode.prev;
+        var afterNode = removeNode.next;
+        if (beforeNode) {
+            beforeNode.next = afterNode; // beforeNode가 null이 아닐 경우 설정
+        }
+        if (afterNode) {
+            afterNode.prev = beforeNode; // afterNode가 null이 아닐 경우 설정
+        }
+        removeNode.next = null;
+        removeNode.prev = null;
+        this.length--;
+        return removeNode;
+    }
+
 }
 
